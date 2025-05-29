@@ -13,11 +13,12 @@ def check_vpn(ip_address):
         is_vpn = any(keyword in org_upper for keyword in ['VPN', 'HOSTING', 'CLOUDFLARE'])
 
         return {
-            "Sehir": data.get('city', None),
-            "Ulke": data.get('country', None),
+            "Şehir": data.get('city', None),
+            "Ülke": data.get('country', None),
             "ip": data.get('ip', ip_address),
             "vpn_mi": is_vpn,
-            "org": org
+            "org": org,
+            "Tg": "@batukurucu"
         }
     except Exception as e:
         return {"error": str(e)}
@@ -26,7 +27,7 @@ def check_vpn(ip_address):
 def check_vpn_route():
     ip = request.args.get('ip')
     if not ip:
-        return jsonify({"error": "IP NERDE YARRAM"}), 400
+        return jsonify({"error": "IP adresi gerekli parametre olarak gönderilmelidir (ip)."}), 400
     
     result = check_vpn(ip)
     if 'error' in result:
@@ -35,4 +36,5 @@ def check_vpn_route():
     return jsonify(result)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Development için bu satırı olduğu gibi bırakabiliriz.
+    app.run(debug=True, host="0.0.0.0", port=5000)
